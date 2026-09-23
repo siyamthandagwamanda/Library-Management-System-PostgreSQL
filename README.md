@@ -257,9 +257,6 @@ WHERE published_year = 1869;
 ## Notes / Fixes Applied
 
 While consolidating the working notes into this README, a few small corrections were made to match each query's stated intent:
-- "Find books published after 1950" now filters on `> 1950` (was `> 1930`).
-- "Find all American authors" now filters on `nationality = 'American'` (was `'British'`).
-- "Find authors whose names contain George" now uses `'%George%'` (was `'%Aldous%'`).
-- The duplicated `INSERT INTO books` block in Sprint 2 was removed to avoid a unique-constraint violation.
-- Added the missing SQL for "Increment the published year 1869 by 1."
-- Added the missing `INSERT INTO patrons` statement to Sprint 2.
+
+
+📚 ReferencesGoogle Search Engine & Developer Documentation: Utilised for syntax validation, troubleshooting PostgreSQL constraint errors, and researching SQL standard implementation practices.
