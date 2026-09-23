@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS patrons (
 
 Run the script using the **Execute (▶)** button. A successful run returns:
 
-```
-Query returned successfully.
+```diff
++ Query returned successfully.
 ```
 
 **Why `ON DELETE CASCADE` matters:** without it, deleting an author who still has books linked to them raises:
