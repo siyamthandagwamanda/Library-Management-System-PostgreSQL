@@ -1,3 +1,5 @@
+<img src="https://socialify.git.ci/siyamthandagwamanda/Library-Management-System-PostgreSQL/image?language=1&owner=1&name=1&stargazers=1&theme=Light" alt="Library-Management-System-PostgreSQL" width="640" height="320" />
+
 # LibraryDB — PostgreSQL Project
 
 A relational database project built with **PostgreSQL 18** and managed through **pgAdmin4**, modeling a simple library system with authors, books, and patrons.
