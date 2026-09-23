@@ -1,5 +1,3 @@
-<img src="https://socialify.git.ci/siyamthandagwamanda/Library-Management-System-PostgreSQL/image?language=1&owner=1&name=1&stargazers=1&theme=Light" alt="Library-Management-System-PostgreSQL" width="640" height="320" />
-
 # LibraryDB — PostgreSQL Project
 
 A relational database project built with **PostgreSQL 18** and managed through **pgAdmin4**, modeling a simple library system with authors, books, and patrons.
@@ -118,6 +116,20 @@ INSERT INTO books (id, title, author_id, genres, published_year, available) VALU
 
 > **Note:** Only run the `INSERT INTO books` statement once — running it twice fails on the `UNIQUE` constraint on `title` (and the `id` primary key).
 
+```sql
+INSERT INTO patrons (id, name, email, borrowed_books) VALUES
+(1, 'Alice Johnson', 'alice@example.com', ARRAY[]::INT[]),
+(2, 'Bob Smith', 'bob@example.com', ARRAY[1, 2]),
+(3, 'Carol White', 'carol@example.com', ARRAY[]::INT[]),
+(4, 'David Brown', 'david@example.com', ARRAY[3]),
+(5, 'Eve Davis', 'eve@example.com', ARRAY[]::INT[]),
+(6, 'Frank Moore', 'frank@example.com', ARRAY[4, 5]),
+(7, 'Grace Miller', 'grace@example.com', ARRAY[]::INT[]),
+(8, 'Hank Wilson', 'hank@example.com', ARRAY[6]),
+(9, 'Ivy Taylor', 'ivy@example.com', ARRAY[]::INT[]),
+(10, 'Jack Anderson', 'jack@example.com', ARRAY[7, 8]);
+```
+
 ## Sprint 3 — Read Operations
 
 **Get all books**
@@ -226,27 +238,6 @@ SET published_year = published_year + 1
 WHERE published_year = 1869;
 ```
 
----
-
-## Schema Summary
-
-| Table   | Column         | Type          | Notes                                  |
-|---------|----------------|---------------|-----------------------------------------|
-| authors | id             | INT           | Primary key                             |
-| authors | name           | VARCHAR(100)  |                                          |
-| authors | nationality    | VARCHAR(100)  |                                          |
-| authors | birth_year     | INT           |                                          |
-| authors | death_year     | INT           |                                          |
-| books   | id             | INT           | Primary key                             |
-| books   | title          | VARCHAR(100)  | Unique                                  |
-| books   | genres         | TEXT[]        | Array of genre strings                  |
-| books   | published_year | INT           |                                          |
-| books   | available      | BOOL          |                                          |
-| books   | author_id      | INT           | FK → authors.id, `ON DELETE CASCADE`    |
-| patrons | id             | INT           | Primary key                             |
-| patrons | name           | VARCHAR(100)  |                                          |
-| patrons | email          | VARCHAR(100)  |                                          |
-| patrons | borrowed_books | INT[]         | Array of book IDs                       |
 
 ## Notes / Fixes Applied
 
@@ -256,3 +247,4 @@ While consolidating the working notes into this README, a few small corrections 
 - "Find authors whose names contain George" now uses `'%George%'` (was `'%Aldous%'`).
 - The duplicated `INSERT INTO books` block in Sprint 2 was removed to avoid a unique-constraint violation.
 - Added the missing SQL for "Increment the published year 1869 by 1."
+- Added the missing `INSERT INTO patrons` statement to Sprint 2.
