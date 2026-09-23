@@ -227,7 +227,7 @@ SELECT * FROM books
 WHERE available = true AND published_year > 1930;
 
 
-**Find authors whose names contain ""** (case-insensitive partial match / guard capital letters)
+**Find authors whose names contain ""** (case-insensitive partial match / Find authors whose names contain a specific string using a case-insensitive partial match while preserving uppercase and lowercase boundaries.)
 
 SELECT * FROM authors
 WHERE name ILIKE '%Aldous%';
