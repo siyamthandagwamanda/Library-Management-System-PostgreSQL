@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS authors (
 -- Deleting an author also deletes their books
 CREATE TABLE IF NOT EXISTS books (
     id INT PRIMARY KEY,
-    title VARCHAR(100) UNIQUE,
+    title VARCHAR(100),
     genres TEXT[],
     published_year INT,
     available BOOL,
@@ -88,7 +88,7 @@ Adding `ON DELETE CASCADE` to the `author_id` foreign key ensures a book's autho
 
 ## Sprint 2 — Insert Data
 
-Data must be inserted in dependency order: **authors before books**, since books reference `author_id`. (Books before patrons isn't enforced by a constraint, but keeps `borrowed_books` references meaningful.)
+Data must be inserted in the order: **authors before books**, since books reference `author_id`. (Books before patrons isn't enforced by a constraint, but keeps `borrowed_books` references meaningful.)
 
 ```sql
 INSERT INTO authors (id, name, nationality, birth_year, death_year) VALUES
@@ -114,11 +114,9 @@ INSERT INTO books (id, title, author_id, genres, published_year, available) VALU
 (8, 'War and Peace', 8, ARRAY['Historical Novel'], 1869, TRUE),
 (9, 'Crime and Punishment', 9, ARRAY['Philosophical Novel'], 1866, TRUE),
 (10, 'The Hobbit', 10, ARRAY['Fantasy'], 1937, TRUE);
-```
 
-> **Note:** Only run the `INSERT INTO books` statement once — running it twice fails on the `UNIQUE` constraint on `title` (and the `id` primary key).
+> **Note:** Run the INSERT script exactly once. Repeating it will cause duplicate key/title errors.
 
-```sql
 INSERT INTO patrons (id, name, email, borrowed_books) VALUES
 (1, 'Alice Johnson', 'alice@example.com', ARRAY[]::INT[]),
 (2, 'Bob Smith', 'bob@example.com', ARRAY[1, 2]),
@@ -137,16 +135,14 @@ INSERT INTO patrons (id, name, email, borrowed_books) VALUES
 **Get all books**
 ```sql
 SELECT * FROM books;
-```
 
 **Get a book by title**
-```sql
+
 SELECT * FROM books
 WHERE title = 'The Catcher in the Rye';
-```
 
 **Get all books by a specific author**
-```sql
+
 SELECT * FROM books
 WHERE author_id = 8;
 ```
@@ -171,10 +167,12 @@ WHERE id = 4;
 UPDATE books
 SET genres = array_append(genres, 'Fiction')
 WHERE id = 3;
-```
 
-**Add a genre at the start of the array instead** (left-to-right / prepend logic)
-```sql
+
+**Add a genre at the start of the array instead**
+**Left-To-Right Prepend Logic: In database systems like PostgreSQL, array_prepend adds an element to the front (the beginning) of an existing array.**
+**When you read code or text in English, you read from left to right. The function arguments follow this exact reading order:**
+
 UPDATE books
 SET genres = array_prepend('Fiction', genres)
 WHERE id = 3;
@@ -187,14 +185,20 @@ SET borrowed_books = array_append(borrowed_books, 4)
 WHERE id = 2;
 ```
 
-## Sprint 5 — Delete Operations
+## Sprint 5 — 1st Delete Operations
 
 **Delete a book by title**
 ```sql
 DELETE FROM books
 WHERE title = 'Moby-Dick';
+
+**Delete a book by author id**
+
+DELETE FROM author
+WHERE id = 5;
 ```
 
+## Sprint 5 — 2nd Delete Operations
 **Delete an author by ID** — thanks to `ON DELETE CASCADE`, this also removes all of that author's books:
 ```sql
 DELETE FROM authors
@@ -206,17 +210,13 @@ WHERE id = 5;
 **Find books published after 1950**
 ```sql
 SELECT * FROM books
-WHERE published_year > 1950;
-```
+WHERE published_year > 1930;
 
 **Find all American authors**
-```sql
 SELECT * FROM authors
-WHERE nationality = 'American';
-```
+WHERE nationality = 'British';
 
 **Set all books as available**
-```sql
 UPDATE books
 SET available = true;
 ```
@@ -225,12 +225,19 @@ SET available = true;
 ```sql
 SELECT * FROM books
 WHERE available = true AND published_year > 1930;
+
+
+**Find authors whose names contain ""** (case-insensitive partial match / guard capital letters)
+
+SELECT * FROM authors
+WHERE name ILIKE '%Aldous%';
 ```
 
-**Find authors whose names contain "George"** (case-insensitive partial match)
+**What if**
+**Find authors whose names contain ""*Aldous*
 ```sql
 SELECT * FROM authors
-WHERE name ILIKE '%George%';
+WHERE name LIKE 'Aldous';
 ```
 
 **Increment a book's published year by 1** (e.g. the book published in 1869)
@@ -240,6 +247,12 @@ SET published_year = published_year + 1
 WHERE published_year = 1869;
 ```
 
+
+```sql
+UPDATE books
+SET published_year = 1870
+WHERE published_year = 1869;
+```
 
 ## Notes / Fixes Applied
 
