@@ -255,10 +255,6 @@ WHERE published_year = 1869;
 ```
 
 ## Notes / Fixes Applied
-
-While building the working notes into this README, a few small corrections were made to match each query's stated intent
-:
-
 📚 ReferencesGoogle Search Engine & Developer Documentation: Utilised for syntax validation, troubleshooting PostgreSQL constraint errors, and researching 
 SQL standard implementation practices.
 
